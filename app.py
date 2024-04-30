@@ -16,7 +16,7 @@ model = load_model()
 
 
 def user_input_features():
-    st.header('Stroke Prediction Model')
+    st.header('Stroke Prediction')
     st.write("Please enter the following details to predict the stroke risk:")
 
     age = st.number_input("Age", min_value=0, max_value=120, value=100)
@@ -66,10 +66,10 @@ if st.button('Predict'):
     prediction_proba = model.predict_proba(input_df)
     
     prob_stroke = prediction_proba[0][1] * 100
-    if prob_stroke < 33:
+    if prob_stroke < 20:
         risk_level = "Low Risk"
         color = "green"
-    elif 33 <= prob_stroke < 66:
+    elif 20 <= prob_stroke < 40:
         risk_level = "Medium Risk"
         color = "orange"
     else:
@@ -78,52 +78,12 @@ if st.button('Predict'):
 
     st.markdown(f'<div style="border-radius:5px;padding:10px;color:white;background-color:{color};">{risk_level} - Probability of Stroke: {prob_stroke:.2f}%</div>', unsafe_allow_html=True)
 
-# Custom CSS and JavaScript for Back to Top button
+# Custom CSS for Footer
 st.markdown("""
     <style>
-    #myBtn {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 30px;
-        z-index: 99;
-        border: none;
-        outline: none;
-        background-color: red;
-        color: white;
-        cursor: pointer;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 18px;
-    }
-
-    #myBtn:hover {
-        background-color: #555;
-    }
-    
-    footer {visibility: hidden;}
     .reportview-container .main footer {visibility: hidden;}
     </style>
-    <footer style="background-color:gray;color:white;text-align:center;padding:10px;">
+    <footer style="background-color:darkblue;color:white;text-align:center;padding:10px;font-size:14px;">
         Developed by <a href="https://github.com/rmdhirr" style="color:white;">Ramadhirra</a>
     </footer>
-    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-    <script>
-    let mybutton = document.getElementById("myBtn");
-
-    window.onscroll = function() {scrollFunction()};
-
-    function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            mybutton.style.display = "block";
-        } else {
-            mybutton.style.display = "none";
-        }
-    }
-
-    function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-    }
-    </script>
     """, unsafe_allow_html=True)

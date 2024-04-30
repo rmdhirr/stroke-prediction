@@ -83,7 +83,7 @@ st.markdown("""
     <style>
     .reportview-container .main footer {visibility: hidden;}
     </style>
-    <footer style="background-color:darkblue;color:white;text-align:center;padding:10px;font-size:14px;">
+    <footer style="background-color:darkgrey;color:white;text-align:center;padding:10px;font-size:14px;">
         Developed by <a href="https://github.com/rmdhirr" style="color:white;">Ramadhirra</a>
     </footer>
     """, unsafe_allow_html=True)

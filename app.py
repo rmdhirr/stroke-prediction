@@ -14,13 +14,14 @@ def load_model():
 
 model = load_model()
 
+
 def user_input_features():
     st.header('Stroke Prediction Model')
     st.write("Please enter the following details to predict the stroke risk:")
 
     age = st.number_input("Age", min_value=0, max_value=120, value=100)
     avg_glucose_level = st.number_input("Average Glucose Level (mg/dL)", min_value=50, max_value=600, value=100)
-    bmi = st.number_input("Body Mass Index (kg/m²)", min_value=10, max_value=60, value=100)
+    bmi = st.number_input("Body Mass Index (kg/m²)", min_value=10, max_value=60, value=22)  # Corrected default value
     gender = st.selectbox("Gender", ("Male", "Female"))
     hypertension = st.selectbox("Hypertension", ("No", "Yes"), index=0)
     heart_disease = st.selectbox("Heart Disease", ("No", "Yes"), index=0)
@@ -29,15 +30,9 @@ def user_input_features():
     residence_type = st.selectbox("Residence Type", ("Urban", "Rural"))
     smoking_status = st.selectbox("Smoking Status", ("formerly smoked", "never smoked", "smokes", "unknown"))
 
-    # Map work types and smoking status to the correct numerical encoding as used during model training
-    work_type_mapping = {
-        "Private": 0, "Self-employed": 1, "Govt_job": 2, "Children": 3, "Never_worked": 4
-    }
-    smoking_status_mapping = {
-        "formerly smoked": 0, "never smoked": 1, "smokes": 2, "unknown": 3
-    }
-
-    # Create a data frame of the input features with correct naming convention as used in training
+    # Mapping and DataFrame creation
+    work_type_mapping = {"Private": 0, "Self-employed": 1, "Govt_job": 2, "Children": 3, "Never_worked": 4}
+    smoking_status_mapping = {"formerly smoked": 0, "never smoked": 1, "smokes": 2, "unknown": 3}
     features = pd.DataFrame({
         'age': [age],
         'avg_glucose_level': [avg_glucose_level],
@@ -50,17 +45,17 @@ def user_input_features():
         'heart_disease_1': [0 if heart_disease == 'No' else 1],
         'ever_married_0': [1 if ever_married == 'No' else 0],
         'ever_married_1': [0 if ever_married == 'No' else 1],
-        'work_type_0': [1 if work_type == work_type_mapping['Private'] else 0],
-        'work_type_1': [1 if work_type == work_type_mapping['Self-employed'] else 0],
-        'work_type_2': [1 if work_type == work_type_mapping['Govt_job'] else 0],
-        'work_type_3': [1 if work_type == work_type_mapping['Children'] else 0],
-        'work_type_4': [1 if work_type == work_type_mapping['Never_worked'] else 0],
+        'work_type_0': [1 if work_type == work_type_mapping[work_type] else 0],
+        'work_type_1': [1 if work_type == work_type_mapping[work_type] else 0],
+        'work_type_2': [1 if work_type == work_type_mapping[work_type] else 0],
+        'work_type_3': [1 if work_type == work_type_mapping[work_type] else 0],
+        'work_type_4': [1 if work_type == work_type_mapping[work_type] else 0],
         'Residence_type_0': [1 if residence_type == 'Urban' else 0],
         'Residence_type_1': [0 if residence_type == 'Urban' else 1],
-        'smoking_status_0': [1 if smoking_status == smoking_status_mapping['formerly smoked'] else 0],
-        'smoking_status_1': [1 if smoking_status == smoking_status_mapping['never smoked'] else 0],
-        'smoking_status_2': [1 if smoking_status == smoking_status_mapping['smokes'] else 0],
-        'smoking_status_3': [1 if smoking_status == smoking_status_mapping['unknown'] else 0],
+        'smoking_status_0': [1 if smoking_status == smoking_status_mapping[smoking_status] else 0],
+        'smoking_status_1': [1 if smoking_status == smoking_status_mapping[smoking_status] else 0],
+        'smoking_status_2': [1 if smoking_status == smoking_status_mapping[smoking_status] else 0],
+        'smoking_status_3': [1 if smoking_status == smoking_status_mapping[smoking_status] else 0],
     })
     return features
 

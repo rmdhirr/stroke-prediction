@@ -25,7 +25,7 @@ def user_input_features():
     gender = st.selectbox("Gender", ("Male", "Female"))
     hypertension = st.selectbox("Hypertension", ("No", "Yes"), index=0)
     heart_disease = st.selectbox("Heart Disease", ("No", "Yes"), index=0)
-    ever_married = st.selectbox("Ever Married?", ("No", "Yes"), index=1)
+    ever_married = st.selectbox("Is Married?", ("No", "Yes"), index=1)
     work_type = st.selectbox("Work Type", ("Private", "Self-employed", "Govt_job", "Never_worked"))
     residence_type = st.selectbox("Residence Type", ("Urban", "Rural"))
     smoking_status = st.selectbox("Smoking Status", ("formerly smoked", "never smoked", "smokes", "unknown"))

@@ -55,9 +55,13 @@ def user_input_features():
     return features
 
 input_df = user_input_features()
+st.write("Input features being used for prediction:", input_df.columns.tolist())  # This line will display the input features used
 
 if st.button('Predict'):
-    prediction = model.predict(input_df)
-    prediction_proba = model.predict_proba(input_df)
-    st.write(f'Prediction (0: No Stroke, 1: Stroke): {prediction[0]}')
-    st.write(f'Probability [No Stroke, Stroke]: {prediction_proba[0][1]*100:.2f}%')
+    try:
+        prediction = model.predict(input_df)
+        prediction_proba = model.predict_proba(input_df)
+        st.write(f'Prediction (0: No Stroke, 1: Stroke): {prediction[0]}')
+        st.write(f'Probability [No Stroke, Stroke]: {prediction_proba[0][1]*100:.2f}%')
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")  # This will display the error message if prediction fails

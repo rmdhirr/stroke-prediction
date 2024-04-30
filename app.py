@@ -76,14 +76,14 @@ if st.button('Predict'):
         risk_level = "High Risk"
         color = "red"
 
-    st.markdown(f'<div style="border-radius:5px;padding:10px;color:white;background-color:{color};padding-bottom:40px;">{risk_level} - Probability of Stroke: {prob_stroke:.2f}%</div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="border-radius:5px;padding:10px;color:white;background-color:{color}; margin-bottom: 20px;">{risk_level} - Probability of Stroke: {prob_stroke:.2f}%</div>', unsafe_allow_html=True)
 
 # Custom CSS for Footer
 st.markdown("""
     <style>
     .reportview-container .main footer {visibility: hidden;}
     </style>
-    <footer style="background-color:black;color:white;text-align:center;padding:10px;font-size:14px;">
+    <footer style="background-color:lightblack;color:white;text-align:center;padding:10px;font-size:14px;">
         Developed by <a href="https://github.com/rmdhirr" style="color:white;">Ramadhirra</a>
     </footer>
     """, unsafe_allow_html=True)

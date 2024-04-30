@@ -27,26 +27,26 @@ def user_input_features():
     residence_type = st.selectbox("Residence Type", ("Urban", "Rural"))
     smoking_status = st.selectbox("Smoking Status", ("formerly smoked", "never smoked", "smokes", "unknown"))
 
-    # Create a data frame of the input features
+    # Create a data frame of the input features with correct naming convention as used in training
     features = pd.DataFrame({
         'age': [age],
         'avg_glucose_level': [avg_glucose_level],
         'bmi': [bmi],
-        'gender_Male': [1 if gender == 'Male' else 0],
-        'gender_Female': [0 if gender == 'Male' else 1],
-        'hypertension_No': [1 if hypertension == 'No' else 0],
-        'hypertension_Yes': [0 if hypertension == 'No' else 1],
-        'heart_disease_No': [1 if heart_disease == 'No' else 0],
-        'heart_disease_Yes': [0 if heart_disease == 'No' else 1],
-        'ever_married_No': [1 if ever_married == 'No' else 0],
-        'ever_married_Yes': [0 if ever_married == 'No' else 1],
+        'gender_0': [1 if gender == 'Male' else 0],
+        'gender_1': [0 if gender == 'Male' else 1],
+        'hypertension_0': [1 if hypertension == 'No' else 0],
+        'hypertension_1': [0 if hypertension == 'No' else 1],
+        'heart_disease_0': [1 if heart_disease == 'No' else 0],
+        'heart_disease_1': [0 if heart_disease == 'No' else 1],
+        'ever_married_0': [1 if ever_married == 'No' else 0],
+        'ever_married_1': [0 if ever_married == 'No' else 1],
         'work_type_Private': [1 if work_type == 'Private' else 0],
         'work_type_Self-employed': [1 if work_type == 'Self-employed' else 0],
         'work_type_Govt_job': [1 if work_type == 'Govt_job' else 0],
         'work_type_Children': [1 if work_type == 'Children' else 0],
         'work_type_Never_worked': [1 if work_type == 'Never_worked' else 0],
-        'residence_type_Urban': [1 if residence_type == 'Urban' else 0],
-        'residence_type_Rural': [0 if residence_type == 'Urban' else 1],
+        'Residence_type_0': [1 if residence_type == 'Urban' else 0],
+        'Residence_type_1': [0 if residence_type == 'Urban' else 1],
         'smoking_status_formerly_smoked': [1 if smoking_status == 'formerly smoked' else 0],
         'smoking_status_never_smoked': [1 if smoking_status == 'never smoked' else 0],
         'smoking_status_smokes': [1 if smoking_status == 'smokes' else 0],

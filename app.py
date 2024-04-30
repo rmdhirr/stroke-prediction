@@ -8,14 +8,14 @@ st.set_page_config(page_title="Stroke Prediction", page_icon="🧠", layout="wid
 # Load the model
 @st.cache(allow_output_mutation=True)
 def load_model():
-    with open('random_forest_model_ht.pkl', 'rb') as file:
+    with open('random_forest_model_nt.pkl', 'rb') as file:
         model = pickle.load(file)
     return model
 
 model = load_model()
 
 def user_input_features():
-    st.header('Stroke Prediction Model')
+    st.header('Stroke Prediction')
     st.write("Please enter the following details to predict the stroke risk:")
 
     # Collect inputs

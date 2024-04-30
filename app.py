@@ -16,7 +16,7 @@ model = load_model()
 
 
 def user_input_features():
-    st.header('Stroke Prediction')
+    st.header('🧠 Stroke Prediction')
     st.write("Please enter the following details to predict the stroke risk:")
 
     age = st.number_input("Age", min_value=0, max_value=120, value=30)

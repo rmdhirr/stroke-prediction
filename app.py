@@ -2,10 +2,12 @@ import streamlit as st
 import pandas as pd
 import pickle
 
+# Set page config
+st.set_page_config(page_title="Stroke Prediction", page_icon="🧠", layout="wide")
+
 # Load the model
 @st.cache(allow_output_mutation=True)
 def load_model():
-    # Load a model from the same directory as the script
     with open('random_forest_model_ht.pkl', 'rb') as file:
         model = pickle.load(file)
     return model
@@ -16,6 +18,7 @@ def user_input_features():
     st.header('Stroke Prediction Model')
     st.write("Please enter the following details to predict the stroke risk:")
 
+    # Collect inputs
     age = st.number_input("Age", min_value=0, max_value=120, value=30)
     avg_glucose_level = st.number_input("Average Glucose Level (mg/dL)", min_value=50, max_value=300, value=100)
     bmi = st.number_input("Body Mass Index (kg/m²)", min_value=10, max_value=50, value=22)
@@ -27,58 +30,41 @@ def user_input_features():
     residence_type = st.selectbox("Residence Type", ("Urban", "Rural"))
     smoking_status = st.selectbox("Smoking Status", ("formerly smoked", "never smoked", "smokes", "unknown"))
 
-    # Map work types and smoking status to the correct numerical encoding as used during model training
-    work_type_mapping = {
-        "Private": 0, "Self-employed": 1, "Govt_job": 2, "Children": 3, "Never_worked": 4
-    }
-    smoking_status_mapping = {
-        "formerly smoked": 0, "never smoked": 1, "smokes": 2, "unknown": 3
-    }
-
-    # Create a data frame of the input features with correct naming convention as used in training
+    # Create a data frame of the input features
     features = pd.DataFrame({
-        'age': [age],
-        'avg_glucose_level': [avg_glucose_level],
-        'bmi': [bmi],
-        'gender_0': [1 if gender == 'Male' else 0],
-        'gender_1': [0 if gender == 'Male' else 1],
-        'hypertension_0': [1 if hypertension == 'No' else 0],
-        'hypertension_1': [0 if hypertension == 'No' else 1],
-        'heart_disease_0': [1 if heart_disease == 'No' else 0],
-        'heart_disease_1': [0 if heart_disease == 'No' else 1],
-        'ever_married_0': [1 if ever_married == 'No' else 0],
-        'ever_married_1': [0 if ever_married == 'No' else 1],
-        'work_type_0': [1 if work_type == work_type_mapping['Private'] else 0],
-        'work_type_1': [1 if work_type == work_type_mapping['Self-employed'] else 0],
-        'work_type_2': [1 if work_type == work_type_mapping['Govt_job'] else 0],
-        'work_type_3': [1 if work_type == work_type_mapping['Children'] else 0],
-        'work_type_4': [1 if work_type == work_type_mapping['Never_worked'] else 0],
-        'Residence_type_0': [1 if residence_type == 'Urban' else 0],
-        'Residence_type_1': [0 if residence_type == 'Urban' else 1],
-        'smoking_status_0': [1 if smoking_status == smoking_status_mapping['formerly smoked'] else 0],
-        'smoking_status_1': [1 if smoking_status == smoking_status_mapping['never smoked'] else 0],
-        'smoking_status_2': [1 if smoking_status == smoking_status_mapping['smokes'] else 0],
-        'smoking_status_3': [1 if smoking_status == smoking_status_mapping['unknown'] else 0],
+        # ... (your DataFrame setup)
     })
     return features
 
 input_df = user_input_features()
-st.write("Input features being used for prediction:", input_df.columns.tolist())  # This line will display the input features used
 
 if st.button('Predict'):
     prediction = model.predict(input_df)
-    prediction_proba = model.predict_proba(input_df)
-    
-    # Convert probabilities to percentage and round to two decimal places
-    prob_no_stroke = prediction_proba[0][0] * 100
-    prob_stroke = prediction_proba[0][1] * 100
-    
-    # Display predictions and probabilities
-    st.write(f'Prediction (0: No Stroke, 1: Stroke): {prediction[0]}')
-    st.write(f'Probability [No Stroke, Stroke]: {prob_no_stroke:.2f}%, {prob_stroke:.2f}%')
-    
-    # Show result with color-coded button
-    if prediction[0] == 0:
-        st.success(f"No Stroke Risk Detected — Probability of Stroke: {prob_stroke:.2f}%")
+    prediction_proba = model.predict_proba(input_df)[0]
+
+    # Define risk levels based on probability of having a stroke
+    risk_level = prediction_proba[1]  # Probability of stroke
+    if risk_level < 0.2:
+        risk_text = "Low Risk"
+        risk_color = "success"
+    elif 0.2 <= risk_level < 0.5:
+        risk_text = "Medium Risk"
+        risk_color = "warning"
+    elif 0.5 <= risk_level < 0.7:
+        risk_text = "Medium High Risk"
+        risk_color = "orange"
     else:
-        st.error(f"Stroke Risk Detected — Probability of Stroke: {prob_stroke:.2f}%")
+        risk_text = "High Risk"
+        risk_color = "danger"
+    
+    st.markdown(f"### Prediction: {risk_text}")
+    st.markdown(f"#### Detailed Probability of Stroke: {risk_level*100:.2f}%")
+    st.markdown(f'<div style="color: {risk_color}; font-size: 24px;">{risk_text} - {risk_level*100:.2f}% chance of stroke</div>', unsafe_allow_html=True)
+
+# Credits and GitHub link
+st.sidebar.markdown("## Credits")
+st.sidebar.markdown("Developed by Ramadhirra")
+st.sidebar.markdown("[GitHub](https://github.com/rmdhirr)")
+
+# Back to top button
+st.sidebar.markdown('<a href="#top">Back to Top</a>', unsafe_allow_html=True)

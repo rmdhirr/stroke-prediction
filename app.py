@@ -18,9 +18,9 @@ def user_input_features():
     st.header('Stroke Prediction Model')
     st.write("Please enter the following details to predict the stroke risk:")
 
-    age = st.number_input("Age", min_value=0, max_value=120, value=30)
-    avg_glucose_level = st.number_input("Average Glucose Level (mg/dL)", min_value=50, max_value=300, value=100)
-    bmi = st.number_input("Body Mass Index (kg/m²)", min_value=10, max_value=50, value=22)
+    age = st.number_input("Age", min_value=0, max_value=120, value=100)
+    avg_glucose_level = st.number_input("Average Glucose Level (mg/dL)", min_value=50, max_value=600, value=100)
+    bmi = st.number_input("Body Mass Index (kg/m²)", min_value=10, max_value=60, value=100)
     gender = st.selectbox("Gender", ("Male", "Female"))
     hypertension = st.selectbox("Hypertension", ("No", "Yes"), index=0)
     heart_disease = st.selectbox("Heart Disease", ("No", "Yes"), index=0)
@@ -70,37 +70,65 @@ if st.button('Predict'):
     prediction = model.predict(input_df)
     prediction_proba = model.predict_proba(input_df)
     
-    # Convert probabilities to percentage and round to two decimal places
     prob_stroke = prediction_proba[0][1] * 100
-    
-    # Define risk levels based on the probability of stroke
     if prob_stroke < 33:
         risk_level = "Low Risk"
-        color = "success"  # Green
+        color = "green"
     elif 33 <= prob_stroke < 66:
         risk_level = "Medium Risk"
-        color = "warning"  # Orange
+        color = "orange"
     else:
         risk_level = "High Risk"
-        color = "danger"  # Red
-    
-    # Display predictions and probabilities with color-coded risk level
-    st.write(f'Prediction (0: No Stroke, 1: Stroke): {prediction[0]}')
-    st.markdown(f'**Probability of Stroke: {prob_stroke:.2f}%**')
-    st.markdown(f'<h2 style="color: {color};">{risk_level}</h2>', unsafe_allow_html=True)
+        color = "red"
 
-# Footer with credits and GitHub link
-st.markdown("## Credits")
-st.markdown("Developed by [Ramadhirra](https://github.com/rmdhirr)")
+    st.markdown(f'<div style="border-radius:5px;padding:10px;color:white;background-color:{color};">{risk_level} - Probability of Stroke: {prob_stroke:.2f}%</div>', unsafe_allow_html=True)
 
-# Custom CSS to style the back to top button
+# Custom CSS and JavaScript for Back to Top button
 st.markdown("""
     <style>
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: red;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    #myBtn:hover {
+        background-color: #555;
+    }
+    
+    footer {visibility: hidden;}
     .reportview-container .main footer {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    footer {position: fixed; left: 0; bottom: 0; width: 100%; background-color: white; color: black; text-align: center;}
     </style>
-    <footer>
-        <button onclick="window.scrollTo(0,0);">Back to Top</button>
+    <footer style="background-color:gray;color:white;text-align:center;padding:10px;">
+        Developed by <a href="https://github.com/rmdhirr" style="color:white;">Ramadhirra</a>
     </footer>
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <script>
+    let mybutton = document.getElementById("myBtn");
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+    </script>
     """, unsafe_allow_html=True)
